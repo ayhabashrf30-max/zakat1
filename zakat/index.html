@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لجنة زكاة | الكوم الطويل</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <style>
+        :root {
+            --primary-color: #0a5c43;
+            --primary-light: #0f7657;
+            --primary-dark: #064531;
+            --secondary-color: #c59b27;
+            --secondary-light: #e0b336;
+            --accent-color: #0ea5e9;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --marquee-bg: #e0b336;
+            --marquee-text: #064531;
+        }
+
+        body.dark-theme {
+            --bg-light: #0f172a;
+            --bg-card: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --primary-color: #10b981;
+            --primary-light: #34d399;
+            --marquee-bg: #1e293b;
+            --marquee-text: #e0b336;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 5px; }
+
+        /* شريط الإعلانات العاجلة المتحرك */
+        .marquee-bar {
+            background: var(--marquee-bg);
+            color: var(--marquee-text);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 0;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1001;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-right: 100%;
+            animation: marqueeEffect 25s linear infinite;
+        }
+        @keyframes marqueeEffect {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(100%, 0, 0); }
+        }
+
+        /* الهيدر */
+        header {
+            position: fixed;
+            top: 31px; left: 0; right: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: var(--primary-dark);
+            border-bottom: 1px solid var(--primary-light);
+        }
+
+        header.scrolled .nav-link, 
+        header.scrolled .logo-text,
+        header.scrolled .mobile-header-actions .fb-top-icon,
+        header.scrolled .theme-toggle-btn {
+            color: #ffffff !important;
+        }
+
+        header.scrolled .fb-nav-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+        .logo-img { width: 45px; height: 45px; object-fit: contain; border-radius: 50%; background: #fff; padding: 2px; cursor: pointer; }
+        .logo-text { font-size: 1.1rem; font-weight: 700; color: var(--primary-color); user-select: none; }
+
+        nav { display: flex; align-items: center; gap: 15px; }
+        nav ul { display: flex; list-style: none; gap: 20px; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; transition: all 0.3s ease; }
+        .nav-link:hover { color: var(--secondary-color) !important; }
+
+        .fb-nav-btn {
+            background: #1877f2; color: white; padding: 8px 16px; border-radius: 50px;
+            font-weight: 600; display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 0.9rem;
+        }
+
+        .theme-toggle-btn { cursor: pointer; font-size: 1.2rem; color: var(--text-dark); display: flex; align-items: center; justify-content: center; transition: color 0.3s; }
+
+        .mobile-header-actions { display: none; align-items: center; gap: 18px; }
+        .fb-top-icon { color: #1877f2; font-size: 1.4rem; text-decoration: none; }
+        .menu-toggle { font-size: 1.4rem; color: var(--primary-color); cursor: pointer; }
+
+        /* البطل */
+        .hero {
+            position: relative; min-height: 80vh;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+            display: flex; align-items: center; justify-content: center; text-align: center; padding: 160px 20px 60px; color: white;
+        }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0); background-size: 20px 20px; }
+        .hero-content { max-width: 800px; position: relative; z-index: 2; }
+        .quran-verse { font-size: 1.4rem; color: var(--secondary-light); font-weight: 600; margin-bottom: 20px; }
+        .hero h1 { font-size: 2.6rem; font-weight: 900; margin-bottom: 15px; }
+        .hero-desc { font-size: 1.05rem; line-height: 1.8; opacity: 0.9; margin-bottom: 30px; }
+        .hero-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--secondary-color); color: var(--primary-dark); text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; box-shadow: 0 8px 15px rgba(0,0,0,0.15); cursor: pointer; border: none; font-size: 1rem; }
+
+        /* الإحصائيات */
+        .stats-section { max-width: 1100px; margin: -35px auto 40px; position: relative; z-index: 10; padding: 0 16px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .stat-card { background: var(--bg-card); padding: 20px 12px; border-radius: 16px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border-bottom: 3px solid var(--secondary-color); transition: background-color 0.3s; }
+        .stat-icon { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 8px; }
+        .stat-number { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+
+        /* الأقسام */
+        section { padding: 50px 16px; max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 35px; }
+        .section-header h2 { font-size: 1.8rem; color: var(--primary-color); font-weight: 800; }
+        .section-header::after { content: '♦ ♦ ♦'; display: block; color: var(--secondary-color); font-size: 0.8rem; margin-top: 4px; }
+
+        /* المشاريع */
+        .campaigns-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .campaign-card { background: var(--bg-card); border-radius: 16px; box-shadow: 0 6px 15px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; padding: 24px; transition: background-color 0.3s; }
+        .campaign-icon-box { width: 50px; height: 50px; background: rgba(10, 92, 67, 0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--primary-color); margin-bottom: 15px; }
+        .campaign-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; color: var(--text-dark); }
+        .campaign-amount { display: inline-block; background: rgba(197, 155, 39, 0.12); color: var(--primary-dark); padding: 5px 12px; border-radius: 50px; font-size: 0.95rem; font-weight: 700; margin-bottom: 15px; border: 1px solid rgba(197, 155, 39, 0.2); width: fit-content; }
+        body.dark-theme .campaign-amount { color: var(--secondary-light); }
+        .campaign-amount strong { font-size: 1.15rem; font-weight: 900; color: var(--secondary-color); margin: 0 4px; }
+        .campaign-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 20px; }
+        .progress-bar-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: auto; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); }
+
+        /* الشركاء والمؤسسات */
+        .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .partner-card { background: var(--bg-card); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); transition: background-color 0.3s; }
+        .partner-logo-box { width: 65px; height: 65px; border-radius: 12px; overflow: hidden; background: #f1f5f9; flex-shrink: 0; border: 1px solid #e2e8f0; }
+        .partner-logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .partner-info h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+        .partner-btn { background: rgba(24, 119, 242, 0.08); color: #1877f2; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+        .partner-btn:hover { background: #1877f2; color: white; }
+
+        /* التبرع والحاسبة السريعة */
+        .donation-channels { background: rgba(10, 92, 67, 0.05); border-radius: 24px; padding: 40px 20px; }
+        body.dark-theme .donation-channels { background: rgba(255,255,255,0.02); }
+        .channels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; }
+        .channel-card { background: var(--bg-card); border-radius: 16px; padding: 25px 20px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.02); transition: background-color 0.3s; }
+        .channel-logo { font-size: 2.2rem; margin-bottom: 10px; }
+        .vodafone .channel-logo { color: #e60000; }
+        .instapay .channel-logo { color: #107c41; }
+        .phone-num { font-size: 1.4rem; font-weight: 800; margin: 12px 0; display: block; }
+        .action-btn { width: 100%; padding: 12px; border: none; border-radius: 50px; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .btn-copy { background: #e60000; color: white; }
+        .btn-link { background: #107c41; color: white; }
+
+        /* حاسبة الزكاة الذكية */
+        .zakat-calculator-card { background: var(--bg-card); border-radius: 20px; padding: 25px; margin: 35px auto 0; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); text-align: center; transition: background-color 0.3s; }
+        .zakat-calculator-card h3 { color: var(--primary-color); font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+        .calc-input-group { display: flex; align-items: center; background: var(--bg-light); border: 2px solid #e2e8f0; border-radius: 50px; padding: 6px 20px; margin: 20px auto 15px; max-width: 360px; transition: border-color 0.3s; }
+        body.dark-theme .calc-input-group { border-color: #334155; }
+        .calc-input-group input { border: none; background: transparent; width: 100%; font-size: 1.2rem; font-weight: 700; color: var(--text-dark); outline: none; text-align: center; }
+        .currency-label { font-weight: 800; color: var(--text-muted); }
+        .calc-result { display: none; font-size: 1.1rem; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 12px 25px; border-radius: 50px; margin-top: 10px; animation: fadeIn 0.3s ease; }
+        .calc-result strong { color: #10b981; font-size: 1.4rem; font-weight: 900; margin: 0 5px; }
+
+        /* دليل التبرع بالدم */
+        .blood-directory-box { background: var(--bg-card); border-radius: 20px; padding: 25px; margin: 30px auto 0; max-width: 700px; box-shadow: 0 6px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); transition: background-color 0.3s; text-align: center; }
+        .blood-header-icon { font-size: 2.2rem; color: #ef4444; margin-bottom: 8px; }
+        .blood-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 20px; }
+        .blood-card { background: var(--bg-light); padding: 15px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease; position: relative; }
+        .blood-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15); border-color: #ef4444; }
+        .blood-type { font-size: 1.5rem; font-weight: 900; color: #ef4444; }
+        .blood-count { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); }
+
+        /* مؤشر قراءة القرآن والذكر التفاعلي */
+        .quran-widget-container {
+            background: var(--bg-card); border-radius: 24px; padding: 30px 20px; margin: 40px auto 0; max-width: 850px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 2px dashed rgba(10, 92, 67, 0.2); text-align: center; position: relative; transition: all 0.3s ease;
+        }
+        body.dark-theme .quran-widget-container { border-color: rgba(16, 185, 129, 0.2); }
+        .quran-widget-header { color: var(--primary-color); font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .quran-text-display { font-size: 1.35rem; font-weight: 700; color: var(--text-dark); min-height: 70px; display: flex; align-items: center; justify-content: center; line-height: 1.8; padding: 0 15px; transition: opacity 0.3s ease; }
+        .quran-source-display { font-size: 0.85rem; color: var(--secondary-color); font-weight: 700; margin-top: 5px; margin-bottom: 20px; }
+        .quran-controls { display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .widget-btn { padding: 10px 22px; border: none; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .btn-next-verse { background: var(--primary-color); color: white; }
+        .btn-next-verse:hover { background: var(--primary-light); }
+        .btn-play-audio { background: var(--secondary-color); color: var(--primary-dark); }
+        .btn-play-audio:hover { background: var(--secondary-light); }
+
+        /* لوحة التعديل المودال */
+        .admin-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 4000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 16px; }
+        .admin-modal.active { opacity: 1; pointer-events: auto; }
+        .admin-box { background: var(--bg-card); width: 100%; max-width: 460px; padding: 25px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); text-align: center; transform: scale(0.9); transition: transform 0.3s ease; }
+        .admin-modal.active .admin-box { transform: scale(1); }
+        .admin-box h3 { font-size: 1.25rem; font-weight: 800; color: var(--primary-color); margin-bottom: 10px; }
+        .admin-box textarea { width: 100%; height: 90px; border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 0.95rem; font-weight: 600; outline: none; resize: none; margin-top: 15px; background: var(--bg-light); color: var(--text-dark); }
+        body.dark-theme .admin-box textarea { border-color: #334155; }
+        .admin-box-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .admin-btn-save { background: #10b981; color: white; flex: 2; }
+        .admin-btn-close { background: var(--text-muted); color: white; flex: 1; }
+
+        /* الأسئلة الشائعة */
+        .accordion-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .accordion-item { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 12px rgba(0,0,0,0.01); transition: background-color 0.3s; }
+        .accordion-header { padding: 18px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .accordion-header i { transition: transform 0.3s ease; color: var(--secondary-color); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: rgba(0,0,0,0.01); }
+        .accordion-content p { padding: 18px 20px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .accordion-item.active .accordion-header i { transform: rotate(180deg); }
+        .accordion-item.active .accordion-content { border-top: 1px solid rgba(0,0,0,0.02); }
+
+        /* فريق العمل */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .member-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.03); text-align: center; transition: background-color 0.3s; }
+        .member-avatar-box { padding-top: 20px; margin-bottom: 10px; }
+        .member-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(10, 92, 67, 0.05); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary-color); margin: 0 auto; }
+        .member-role { font-size: 0.8rem; font-weight: 700; color: var(--secondary-color); background: rgba(197, 155, 39, 0.06); padding: 3px 12px; border-radius: 50px; display: inline-block; margin-bottom: 15px; }
+        .member-actions { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #f1f5f9; }
+        body.dark-theme .member-actions { border-top-color: #334155; }
+        .member-btn { padding: 12px; text-decoration: none; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-call { color: var(--primary-color); background: var(--bg-card); }
+        .btn-wa { color: #ffffff; background: #25d366; }
+
+        /* السلايدر والمعرض بتنسيق Swiper الجديد */
+        .slider-section { background: rgba(0,0,0,0.02); overflow: hidden; padding: 40px 0; }
+        .swiper { width: 100%; padding: 15px 0; }
+        /* الكود التالي مسؤول عن جعل الحركة مستمرة (Linear) بدون توقفات */
+        .swiper-wrapper { transition-timing-function: linear !important; }
+        .swiper-slide { width: max-content !important; }
+        
+        .slide-item { width: 280px; height: 190px; border-radius: 12px; overflow: hidden; cursor: pointer; position: relative; background: #ddd; border: 2px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 92, 67, 0.4); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.6rem; opacity: 0; transition: opacity 0.2s; }
+        .slide-item:hover .slide-overlay { opacity: 1; }
+
+        /* لايت بوكس وتوست */
+        .lightbox-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.96); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 16px; }
+        .lightbox-modal.active { opacity: 1; pointer-events: auto; }
+        .lightbox-content { max-width: 100%; max-height: 80vh; border-radius: 8px; transform: scale(0.95); transition: transform 0.3s ease; }
+        .lightbox-modal.active .lightbox-content { transform: scale(1); }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 2rem; cursor: pointer; }
+
+        .toast-notification { position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; z-index: 2000; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: bottom 0.3s ease; display: flex; align-items: center; gap: 8px; width: max-content; pointer-events: none; }
+        .toast-notification.show { bottom: 30px; }
+
+        /* زر مشاركة واتساب العائم */
+        .share-fab { position: fixed; bottom: 30px; left: 20px; background: #25d366; color: white; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1500; text-decoration: none; transition: transform 0.3s ease; }
+        .share-fab:hover { transform: scale(1.1) rotate(15deg); background: #20ba5a; }
+        .share-tooltip { position: absolute; right: 60px; background: #1e293b; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .share-fab:hover .share-tooltip { opacity: 1; }
+
+        /* الفوتر */
+        footer { background: var(--primary-dark); color: white; padding: 35px 16px; border-top: 4px solid var(--secondary-color); }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
+        .footer-logo-img { width: 55px; height: 55px; background: white; border-radius: 50%; padding: 2px; cursor: pointer; }
+        .footer-title { font-size: 1.25rem; font-weight: 700; }
+        .footer-license { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); }
+        .footer-fb-btn { background: #1877f2; color: white; padding: 8px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
+        .footer-copy { margin-top: 10px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); border-top: 1px solid rgba(255,255,255,0.1); width: 100%; padding-top: 15px; font-family: Arial, sans-serif; letter-spacing: 0.5px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 992px) {
+            header { top: 31px; }
+            .hero h1 { font-size: 2rem; }
+            .quran-verse { font-size: 1.2rem; }
+            nav ul { display: none; flex-direction: column; position: absolute; top: 65px; left: 16px; right: 16px; background: var(--bg-card); padding: 16px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); border: 1px solid var(--glass-border); z-index: 999; gap: 12px; }
+            nav ul.active { display: flex; }
+            .nav-link { color: var(--text-dark) !important; width: 100%; text-align: center; padding: 6px; }
+            .fb-nav-btn, .desktop-toggle { display: none; }
+            .mobile-header-actions { display: flex; }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.6rem; }
+            .hero-desc { font-size: 0.95rem; }
+            .stats-grid { gap: 10px; }
+            .stat-card { padding: 15px 6px; border-radius: 12px; }
+            .stat-icon { font-size: 1.4rem; }
+            .stat-number { font-size: 1.15rem; }
+            .stat-label { font-size: 0.72rem; }
+            .section-header h2 { font-size: 1.45rem; }
+            .slide-item { width: 220px; height: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-bar">
+        <div class="marquee-content" id="marqueeText">
+            ✦ تنويه هام: بدأ تسجيل الأسر المستحقة لشنط الوجبات والمواد الغذائية بمقر اللجنة ✦ نداء عاجل: مطلوب متبرعين بفصائل دم نادرة لدعم حالات العمليات الحرجة بالقرية ✦ تبرعك بـ 2.5% من مالك يحمي أسرة متعففة ويفتح لها باب حياة كريمة ✦
+        </div>
+    </div>
+
+    <header id="mainHeader">
+        <div class="navbar-container">
+            <div class="logo-area" id="secretLogoTrigger" title="لوحة الإدارة (خاص بالمسؤول)">
+                <img src="logo.jpg" alt="شعار لجنة زكاة الكوم الطويل" class="logo-img" onclick="event.stopPropagation(); openLightbox(this.src)" onerror="this.src='https://placehold.co/150x150/0a5c43/ffffff?text=Zakat'">
+                <span class="logo-text">لجنة زكاة | الكوم الطويل</span>
+            </div>
+            
+            <nav>
+                <div class="mobile-header-actions">
+                    <div class="theme-toggle-btn" title="تغيير الوضع المظلم/المضيء">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <a href="https://www.facebook.com/share/1FovT3bDv6/" target="_blank" class="fb-top-icon">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    <div class="menu-toggle" id="mobileMenuBtn">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                </div>
+
+                <ul id="navLinks">
+                    <li><a href="#" class="nav-link">الرئيسية</a></li>
+                    <li><a href="#about" class="nav-link">عن اللجنة</a></li>
+                    <li><a href="#campaigns" class="nav-link">مشاريع وحملات</a></li>
+                    <li><a href="#partners" class="nav-link">شركاء الخير</a></li>
+                    <li><a href="#donate" class="nav-link">تبرع الآن</a></li>
+                    <li><a href="#faq" class="nav-link">الأسئلة الشائعة</a></li>
+                    <li><a href="#team" class="nav-link">فريق العمل</a></li>
+                    <li><div class="theme-toggle-btn desktop-toggle" title="تغيير الوضع"><i class="fa-solid fa-moon"></i></div></li>
+                    <li><a href="https://www.facebook.com/share/1FovT3bDv6/" target="_blank" class="fb-nav-btn"><i class="fa-brands fa-facebook-f"></i> فيسبوك</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <div class="quran-verse">"مَن ذَا الَّذِي يُقْرِضُ اللَّهَ قَرْضًا حَسَنًا فَيُضَاعِفَهُ لَهُ"</div>
+            <h1>معاً نصنع الأثر في الكوم الطويل</h1>
+            <p class="hero-desc">بوابتكم للخير وجسركم لإيصال الزكاة والصدقات لمستحقيها بكل أمانة وشفافية. نساهم في دعم الأسر المتعففة ورسم البسمة على وجوه المحتاجين.</p>
+            <button onclick="playAudioEffect(); window.location.href='#donate';" class="hero-cta"><i class="fa-solid fa-heart-circle-check"></i> ساهم معنا وتبرع الآن</button>
+        </div>
+    </div>
+
+    <div class="stats-section" id="about">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+                <div class="stat-number"><span class="counter" data-target="31">0</span> سنة</div>
+                <div class="stat-label">من الخبرة والعطاء المتواصل</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-number"><span class="counter" data-target="500">0</span> أسرة</div>
+                <div class="stat-label">مستفيدة ومكفولة دورياً</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-building-shield"></i></div>
+                <div class="stat-number">رقم <span class="counter" data-target="113">0</span></div>
+                <div class="stat-label">مشهرة برقم رسمي لسنة 1995</div>
+            </div>
+        </div>
+    </div>
+
+    <section id="campaigns">
+        <div class="section-header"><h2>مشاريع وحملات</h2></div>
+        <div class="campaigns-grid">
+            
+            <div class="campaign-card">
+                <div class="campaign-icon-box"><i class="fa-solid fa-child-reaching"></i></div>
+                <h3>كفالة أيتام شهرياً</h3>
+                <div class="campaign-amount">تكلفة المشروع: <strong>8,000</strong> جنيه</div>
+                <p>تأمين النفقات المعيشية الأساسية للأطفال الأيتام داخل القرية لحمايتهم وضمان استقرارهم.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 80%;"></div></div>
+            </div>
+            
+            <div class="campaign-card">
+                <div class="campaign-icon-box"><i class="fa-solid fa-kit-medical"></i></div>
+                <h3>علاج مرضى شهرياً</h3>
+                <div class="campaign-amount">تكلفة المشروع: <strong>20,000</strong> جنيه</div>
+                <p>توفير الأدوية الدورية للمصابين بالأمراض المزمنة والمساعدة في تكاليف العمليات الحرجة.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 65%;"></div></div>
+            </div>
+            
+            <div class="campaign-card">
+                <div class="campaign-icon-box"><i class="fa-solid fa-basket-shopping"></i></div>
+                <h3>شنط بنك طعام شهرياً</h3>
+                <div class="campaign-amount">تكلفة المشروع: <strong>15,000</strong> جنيه</div>
+                <p>توفير السلال الغذائية المتكاملة شهرياً للأسر المستورة لضمان حياة كريمة.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 75%;"></div></div>
+            </div>
+
+            <div class="campaign-card">
+                <div class="campaign-icon-box"><i class="fa-solid fa-ring"></i></div>
+                <h3>مساعدة زواج الأيتام والفقراء</h3>
+                <p>المساهمة في تجهيز العرائس من الأيتام والأسر الأكثر احتياجاً لتأسيس حياة أسرية كريمة ومستقرة.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 50%;"></div></div>
+            </div>
+
+            <div class="campaign-card">
+                <div class="campaign-icon-box"><i class="fa-solid fa-faucet-drip"></i></div>
+                <h3>توصيل وصلات مياه</h3>
+                <p>توصيل مياه الشرب النقية لمنازل الأسر المتعففة لضمان بيئة صحية وشريان حياة نظيف وآمن.</p>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 45%;"></div></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="partners">
+        <div class="section-header"><h2>التعاون مع مؤسسات أخرى</h2></div>
+        <div class="partners-grid">
+            <div class="partner-card">
+                <div class="partner-logo-box"><img src="images/partner1.jpg" alt="هيئة الإغاثة العالمية" onerror="this.src='https://placehold.co/100x100/0a5c43/ffffff?text=Partner+1'"></div>
+                <div class="partner-info">
+                    <h3>هيئة الإغاثة العالمية</h3>
+                    <a href="https://www.facebook.com/share/18rgB7kdxh/" target="_blank" class="partner-btn"><i class="fa-brands fa-facebook"></i> عرض الصفحة</a>
+                </div>
+            </div>
+            <div class="partner-card">
+                <div class="partner-logo-box"><img src="images/partner2.jpg" alt="بنك الطعام المصري" onerror="this.src='https://placehold.co/100x100/0a5c43/ffffff?text=Partner+2'"></div>
+                <div class="partner-info">
+                    <h3>بنك الطعام المصري</h3>
+                    <a href="https://www.facebook.com/share/1HEkWj5QKQ/" target="_blank" class="partner-btn"><i class="fa-brands fa-facebook"></i> عرض الصفحة</a>
+                </div>
+            </div>
+            <div class="partner-card">
+                <div class="partner-logo-box"><img src="images/partner3.jpg" alt="مؤسسة مصر الخير" onerror="this.src='https://placehold.co/100x100/0a5c43/ffffff?text=Partner+3'"></div>
+                <div class="partner-info">
+                    <h3>مؤسسة مصر الخير</h3>
+                    <a href="https://www.facebook.com/share/1JASiz7Ucf/" target="_blank" class="partner-btn"><i class="fa-brands fa-facebook"></i> عرض الصفحة</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="donate">
+        <div class="section-header"><h2>قنوات المساهمة والتبرع السريع</h2></div>
+        <div class="donation-channels">
+            <div class="channels-grid">
+                <div class="channel-card vodafone">
+                    <div class="channel-logo"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <h3>فودافون كاش</h3>
+                    <p>اضغط لنسخ الرقم والتحويل الفوري من محفظتك</p>
+                    <span class="phone-num" id="vfNumber">01006635388</span>
+                    <button class="action-btn btn-copy" onclick="copyVodafoneNumber()"><i class="fa-regular fa-copy"></i> <span id="btnCopyText">نسخ رقم المحفظة</span></button>
+                </div>
+                <div class="channel-card instapay">
+                    <div class="channel-logo"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <h3>تطبيق إنستا باي</h3>
+                    <p>اضغط للذهاب لإتمام عملية التحويل الفوري بكل أمان</p>
+                    <span class="phone-num" style="font-size:1.15rem; color:var(--primary-color);">kishka@instapay</span>
+                    <a href="https://ipn.eg/S/kishka/instapay/08eNh7" target="_blank" class="action-btn btn-link"><i class="fa-solid fa-paper-plane"></i> الانتقال للدفع السريع</a>
+                </div>
+            </div>
+
+            <div class="zakat-calculator-card">
+                <h3><i class="fa-solid fa-calculator"></i> حاسبة الزكاة الذكية</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">أدخل إجمالي المبلغ الذي تملكه لحساب قيمة الزكاة الواجبة فوراً (2.5%)</p>
+                <div class="calc-input-group">
+                    <input type="number" id="zakatInput" placeholder="اكتب المبلغ هنا (مثال: 40000)">
+                    <span class="currency-label">ج.م</span>
+                </div>
+                <div class="calc-result" id="zakatResult">مقدار الزكاة المستحقة هو:<strong id="zakatAmount">0</strong>جنيه مصري</div>
+            </div>
+
+            <div class="blood-directory-box">
+                <div class="blood-header-icon"><i class="fa-solid fa-droplet"></i></div>
+                <h3 style="font-weight:800;">دليل المتطوعين للتبرع بالدم بالقرية</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted);">اضغط على فصيلة الدم لعرض أرقام المتطوعين الجاهزين للحالات الطارئة فوراً</p>
+                <div class="blood-grid">
+                    <div class="blood-card" onclick="alert('اتصل بمسؤول اللجنة لتوجيهك لأقرب متبرع فصيلة A+')">
+                        <div class="blood-type">A+</div>
+                        <div class="blood-count">متوفر متطوعين</div>
+                    </div>
+                    <div class="blood-card" onclick="alert('اتصل بمسؤول اللجنة لتوجيهك لأقرب متبرع فصيلة O+')">
+                        <div class="blood-type">O+</div>
+                        <div class="blood-count">متوفر متطوعين</div>
+                    </div>
+                    <div class="blood-card" onclick="alert('اتصل بمسؤول اللجنة لتوجيهك لأقرب متبرع فصيلة B+')">
+                        <div class="blood-type">B+</div>
+                        <div class="blood-count">متوفر متطوعين</div>
+                    </div>
+                    <div class="blood-card" onclick="alert('حالة نادرة! يرجى التواصل مع الإدارة فوراً للتنسيق الحركي')">
+                        <div class="blood-type">AB-</div>
+                        <div class="blood-count">مطلوب متطوعين</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quran-widget-container">
+                <div class="quran-widget-header">
+                    <i class="fa-solid fa-book-quran"></i>
+                    <span>مؤشر الذكر والآيات اليومي (انشر تؤجر)</span>
+                </div>
+                <div class="quran-text-display" id="quranDisplay">"إِنَّ الْمُصَّدِّقِينَ وَالْمُصَّدِّقَاتِ وَأَقْرَضُوا اللَّهَ قَرْضًا حَسَنًا يُضَاعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ"</div>
+                <div class="quran-source-display" id="quranSource">سورة الحديد - آية 18</div>
+                <div class="quran-controls">
+                    <button class="widget-btn btn-next-verse" onclick="changeQuranVerse()"><i class="fa-solid fa-rotate"></i> ذكر/آية أخرى</button>
+                    <button class="widget-btn btn-play-audio" id="audioBtn" onclick="toggleQuranAudio()"><i class="fa-solid fa-volume-high"></i> استماع للآية</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="section-header"><h2>الأسئلة الشائعة حول الزكاة</h2></div>
+        <div class="accordion-container">
+            <div class="accordion-item">
+                <div class="accordion-header">هل تذهب أموال الزكاة لمستحقيها داخل القرية فقط؟ <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="accordion-content"><p>نعم، الأولوية المطلقة للجنة هي سد احتياجات الأسر المتعففة والمستحقة داخل قرية الكوم الطويل والنطاق المحيط بها لضمان التكافل الاجتماعي المباشر بين أهل القرية.</p></div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header">كيف يتم التأكد من استحقاق الحالات المسجلة؟ <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="accordion-content"><p>تقوم اللجنة بعمل بحث اجتماعي وتنسيقي ميداني شامل وصارم لكل حالة معينة لضمان وصول أموال المتبرعين والزكاة لمن هم أكثر احتياجاً وبكل أمانة وشفافية.</p></div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header">كيف يمكنني المساهمة بالتبرعات العينية? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="accordion-content"><p>يمكنكم التواصل مباشرة مع أي عضو من أعضاء مجلس الإدارة الموضحين في الأسفل، أو زيارة مقر اللجنة لتسليم الصدقات العينية مثل الملابس والمواد الغذائية.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team">
+        <div class="section-header"><h2>مجلس إدارة اللجنة وفريق العمل</h2></div>
+        <div class="team-grid">
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>أ / اشرف عبدالمعبود الذاهد</h3>
+                <span class="member-role">رئيس اللجنة</span>
+                <div class="member-actions">
+                    <a href="tel:01006635388" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201006635388" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>أ / عصام يوسف مرعي</h3>
+                <span class="member-role">أمين الصندوق</span>
+                <div class="member-actions">
+                    <a href="tel:01060440566" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201060440566" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>م / حسام الدين عباس</h3>
+                <span class="member-role">عضو اللجنة</span>
+                <div class="member-actions">
+                    <a href="tel:01095151691" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201095151691" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>أ / حسام منصور قاسم</h3>
+                <span class="member-role">عضو اللجنة</span>
+                <div class="member-actions">
+                    <a href="tel:01018475854" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201018475854" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>أ / سيد المغازي اسماعيل</h3>
+                <span class="member-role">عضو اللجنة</span>
+                <div class="member-actions">
+                    <a href="tel:01014165283" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201014165283" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>الحاج / فتحي الحشاش</h3>
+                <span class="member-role">عضو اللجنة</span>
+                <div class="member-actions">
+                    <a href="tel:01064904905" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201064904905" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <div class="member-avatar-box"><div class="member-avatar"><i class="fa-solid fa-user-tie"></i></div></div>
+                <h3>أ / سالم ابو شعيشع</h3>
+                <span class="member-role">عضو اللجنة</span>
+                <div class="member-actions">
+                    <a href="tel:01068998109" class="member-btn btn-call"><i class="fa-solid fa-phone"></i> اتصال</a>
+                    <a href="https://wa.me/201068998109" target="_blank" class="member-btn btn-wa"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="slider-section">
+        <div class="section-header"><h2>معرض الأثر وإنجازات اللجنة بالصور</h2></div>
+        
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper" id="sliderTrack">
+                </div>
+        </div>
+    </section>
+
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-box">
+            <h3><i class="fa-solid fa-lock-open"></i> لوحة تحكم رئيس اللجنة والمسؤول</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">اكتب النص الجديد للظهور في شريط الإعلانات بالأعلى فوراً</p>
+            <textarea id="customMarqueeInput" placeholder="اكتب شريط الإعلان هنا..."></textarea>
+            <div class="admin-box-buttons">
+                <button class="widget-btn admin-btn-save" onclick="saveCustomMarquee()">حفظ وتحديث الآن</button>
+                <button class="widget-btn admin-btn-close" onclick="closeAdminModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox-modal" id="lightboxModal"><span class="lightbox-close" onclick="closeLightbox()">&times;</span><img src="" alt="صورة مكبرة" class="lightbox-content" id="lightboxImg"></div>
+    <div class="toast-notification" id="toast"><i class="fa-solid fa-circle-check" style="color: #25d366; font-size: 1.1rem;"></i><span id="toastText">تم نسخ رقم فودافون كاش بنجاح!</span></div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+    <audio id="quranAudioPlayer" src="https://server11.mp3quran.net/yasser/057.mp3" preload="auto"></audio>
+
+    <a href="https://api.whatsapp.com/send?text=%D8%A5%D9%84%D9%8A%D9%8A%D9%8%20%D8%A7%D9%84%D9%85%D9%84%D9%81%20%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%20%D9%84%D9%84%D8%AC%D9%8مي%D8%A9%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%D8%A9%20-%20%D9%84%D8%AC%D9%86%D8%A9%20%D8%B2%D9%83%D8%A7%D8%A3%D8%A9%20%D8%A7%D9%84%D9%83%D9%88%D9%85%20%D8%A7%D9%84%D8%B7%D9%88%D9%8A%D9%84%20%D8%B4%D8%A7%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1" target="_blank" class="share-fab">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="share-tooltip">انشر تؤجر (واتساب)</span>
+    </a>
+
+    <footer>
+        <div class="footer-container">
+            <div>
+                <img src="logo.jpg" alt="شعار لجنة الزكاة" class="footer-logo-img" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/150x150/0a5c43/ffffff?text=Zakat'">
+                <div class="footer-title" style="margin-top:5px;">لـجنة زكـاة | الكـوم الطويـل</div>
+                <div class="footer-license">تأسست لخدمة أهالينا - مشهرة برقم 113 / لسنة 1995</div>
+            </div>
+            <div><a href="https://www.facebook.com/share/1FovT3bDv6/" target="_blank" class="footer-fb-btn"><i class="fa-brands fa-facebook-f"></i> تابع صفحتنا الرسمية على فيسبوك</a></div>
+            <div class="footer-copy">Developed by Ehab Elzahed &copy; 2026</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        // كود تشغيل الصوت
+        function playAudioEffect() {
+            const snd = document.getElementById('clickSound');
+            snd.volume = 0.3; snd.play().catch(e => console.log("الصوت ينتظر تفاعل المستخدم"));
+        }
+
+        // قاعدة بيانات القرآن
+        const quranDatabase = [
+            { text: '"إِنَّ الْمُصَّدِّقِينَ وَالْمُصَّدِّقَاتِ وَأَقْرَضُوا اللَّهَ قَرْضًا حَسَنًا يُضَاعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ"', source: "سورة الحديد - آية 18", audio: "https://server11.mp3quran.net/yasser/057.mp3" },
+            { text: '"مَّثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ"', source: "سورة البقرة - آية 261", audio: "https://server11.mp3quran.net/yasser/002.mp3" },
+            { text: '"وَمَا أَنفَقْتُم مِّن شَيْءٍ فَهُوَ يُخْلِفُهُ ۖ وَهُوَ خَيْرُ الرَّازِقِينَ"', source: "سورة سبأ - آية 39", audio: "https://server11.mp3quran.net/yasser/034.mp3" },
+            { text: '"الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ"', source: "سورة البقرة - آية 274", audio: "https://server11.mp3quran.net/yasser/002.mp3" }
+        ];
+        let currentQuranIndex = 0;
+        const quranAudioPlayer = document.getElementById('quranAudioPlayer');
+
+        function changeQuranVerse() {
+            playAudioEffect();
+            currentQuranIndex = (currentQuranIndex + 1) % quranDatabase.length;
+            const display = document.getElementById('quranDisplay');
+            const source = document.getElementById('quranSource');
+            
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.innerText = quranDatabase[currentQuranIndex].text;
+                source.innerText = quranDatabase[currentQuranIndex].source;
+                display.style.opacity = 1;
+                
+                quranAudioPlayer.pause();
+                quranAudioPlayer.src = quranDatabase[currentQuranIndex].audio;
+                document.getElementById('audioBtn').innerHTML = '<i class="fa-solid fa-volume-high"></i> استماع للآية';
+            }, 300);
+        }
+
+        function toggleQuranAudio() {
+            playAudioEffect();
+            const btn = document.getElementById('audioBtn');
+            if (quranAudioPlayer.paused) {
+                quranAudioPlayer.play().then(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i> إيقاف مؤقت';
+                }).catch(err => alert("برجاء التفاعل مع الصفحة أولاً لتفعيل تشغيل الصوت"));
+            } else {
+                quranAudioPlayer.pause();
+                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> استماع للآية';
+            }
+        }
+
+        // لوحة التحكم السرية
+        let logoClickCount = 0;
+        let logoClickTimer;
+        const secretTrigger = document.getElementById('secretLogoTrigger');
+        const adminModal = document.getElementById('adminModal');
+        const customMarqueeInput = document.getElementById('customMarqueeInput');
+        const marqueeText = document.getElementById('marqueeText');
+
+        if(localStorage.getItem('savedMarqueeText')) {
+            marqueeText.innerText = localStorage.getItem('savedMarqueeText');
+        }
+
+        secretTrigger.addEventListener('click', () => {
+            logoClickCount++;
+            clearTimeout(logoClickTimer);
+            logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 1000); 
+
+            if (logoClickCount === 3) {
+                logoClickCount = 0;
+                const password = prompt("الرجاء إدخال الرقم السري للوحة الإدارة المباشرة:");
+                if (password === "1234") { 
+                    customMarqueeInput.value = marqueeText.innerText;
+                    adminModal.classList.add('active');
+                } else if(password !== null) {
+                    alert("رقم سري خاطئ! يرجى التحقق من الهوية الإدارية للجنة.");
+                }
+            }
+        });
+
+        function saveCustomMarquee() {
+            playAudioEffect();
+            if(customMarqueeInput.value.trim() !== "") {
+                const newText = customMarqueeInput.value;
+                marqueeText.innerText = newText;
+                localStorage.setItem('savedMarqueeText', newText); 
+                showToastNotification("تم تحديث وحفظ شريط الإعلان العاجل بنجاح!");
+                closeAdminModal();
+            } else {
+                alert("يرجى كتابة نص الإعلان أولاً!");
+            }
+        }
+
+        function closeAdminModal() { adminModal.classList.remove('active'); }
+
+        function showToastNotification(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastText').innerText = text;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // سكرول الهيدر وإدارة مظهر القائمة
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 40) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
+        });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        mobileMenuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('active'));
+        });
+
+        // الوضع المظلم
+        const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');
+        themeToggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                playAudioEffect();
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                themeToggleBtns.forEach(b => {
+                    b.innerHTML = isDark ? '<i class="fa-solid fa-sun" style="color:#e0b336;"></i>' : '<i class="fa-solid fa-moon"></i>';
+                });
+            });
+        });
+
+        // نسخ الرقم
+        function copyVodafoneNumber() {
+            playAudioEffect();
+            const numberText = document.getElementById('vfNumber').innerText;
+            navigator.clipboard.writeText(numberText).then(() => {
+                const btnText = document.getElementById('btnCopyText');
+                btnText.innerText = "تم النسخ بنجاح! ✓";
+                showToastNotification("تم نسخ رقم فودافون كاش بنجاح!");
+                setTimeout(() => { btnText.innerText = "نسخ رقم المحفظة"; }, 2500);
+            }).catch(err => console.error('خطأ في النسخ: ', err));
+        }
+
+        // حاسبة الزكاة الذكية
+        const zakatInput = document.getElementById('zakatInput');
+        const zakatResult = document.getElementById('zakatResult');
+        const zakatAmount = document.getElementById('zakatAmount');
+        zakatInput.addEventListener('input', () => {
+            const value = parseFloat(zakatInput.value);
+            if (value && value > 0) {
+                const result = value * 0.025;
+                zakatAmount.innerText = " " + result.toLocaleString('ar-EG', { maximumFractionDigits: 2 }) + " ";
+                zakatResult.style.display = 'block';
+            } else { zakatResult.style.display = 'none'; }
+        });
+
+        // تأثير العدادات
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    let count = 0;
+                    const speed = target / 50; 
+                    const updateCount = () => {
+                        count += speed;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count);
+                            setTimeout(updateCount, 20);
+                        } else { counter.innerText = target; }
+                    };
+                    updateCount();
+                    observer.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(counter => counterObserver.observe(counter));
+
+        // الأسئلة الشائعة
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                playAudioEffect();
+                const item = header.parentElement;
+                const content = header.nextElementSibling;
+                if(item.classList.contains('active')) {
+                    content.style.maxHeight = null;
+                    item.classList.remove('active');
+                } else {
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                    document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // الكود الجديد المسؤول عن توليد الـ 16 صورة وتشغيل السلايدر
+        // ----------------------------------------------------
+        const sliderTrack = document.getElementById('sliderTrack');
+        const totalImages = 16; 
+        let trackHTML = '';
+        
+        for(let i = 1; i <= totalImages; i++) {
+            // لاحظ إضافة كلاس swiper-slide الضروري للمكتبة
+            trackHTML += `
+            <div class="swiper-slide slide-item" onclick="openLightbox('images/photo${i}.jpg')">
+                <img src="images/photo${i}.jpg" alt="صورة ${i}" onerror="this.src='https://placehold.co/400x300/0a5c43/ffffff?text=%D8%B5%D9%88%D8%B1%D8%A9+${i}'">
+                <div class="slide-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+            </div>`;
+        }
+        sliderTrack.innerHTML = trackHTML;
+
+        // تفعيل Swiper ليسمح بالسحب والحركة المستمرة الدائرية
+        const swiper = new Swiper('.mySwiper', {
+            slidesPerView: 'auto',
+            spaceBetween: 15,
+            loop: true,               // هذه الخاصية تمنع الفراغ الأبيض وتعيد الصور من البداية
+            speed: 3500,              // سرعة التنقل
+            grabCursor: true,         // ظهور علامة اليد لتمكين السحب
+            autoplay: {
+                delay: 0,             // حركة مستمرة بدون توقف بين الصور
+                disableOnInteraction: false, // لا تتوقف الحركة عند سحب الصور باليد
+                pauseOnMouseEnter: true      // التوقف عند تمرير الماوس (اختياري)
+            },
+        });
+
+        // نافذة عرض الصور
+        const lightboxModal = document.getElementById('lightboxModal');
+        const lightboxImg = document.getElementById('lightboxImg');
+        function openLightbox(src) { playAudioEffect(); lightboxImg.src = src; lightboxModal.classList.add('active'); }
+        function closeLightbox() { lightboxModal.classList.remove('active'); }
+        lightboxModal.addEventListener('click', (e) => { if (e.target !== lightboxImg && e.target !== document.querySelector('.lightbox-close')) closeLightbox(); });
+    </script>
+</body>
+</html>
