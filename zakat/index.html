@@ -280,7 +280,6 @@
         /* السلايدر والمعرض بتنسيق Swiper الجديد */
         .slider-section { background: rgba(0,0,0,0.02); overflow: hidden; padding: 40px 0; }
         .swiper { width: 100%; padding: 15px 0; }
-        /* الكود التالي مسؤول عن جعل الحركة مستمرة (Linear) بدون توقفات */
         .swiper-wrapper { transition-timing-function: linear !important; }
         .swiper-slide { width: max-content !important; }
         
@@ -338,9 +337,7 @@
             .slide-item { width: 220px; height: 160px; }
         }
 
-        /* =========================================
-           تنسيقات شاشة الترحيب (Splash Screen) المضافة
-        ========================================= */
+        /* تنسيقات شاشة الترحيب (Splash Screen) */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -351,7 +348,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 99999; /* تم الرفع لضمان التغطية الكاملة */
+            z-index: 99999;
             transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
         }
 
@@ -376,8 +373,9 @@
 <body>
 
     <div id="splash-screen">
-        <img src="1000784130.png" alt="شعار لجنة زكاة الكوم الطويل" class="splash-logo">
+        <img src="1.jpg" alt="شعار لجنة زكاة الكوم الطويل" class="splash-logo">
     </div>
+
     <div class="marquee-bar">
         <div class="marquee-content" id="marqueeText">
             ✦ تنويه هام: بدأ تسجيل الأسر المستحقة لشنط الوجبات والمواد الغذائية بمقر اللجنة ✦ نداء عاجل: مطلوب متبرعين بفصائل دم نادرة لدعم حالات العمليات الحرجة بالقرية ✦ تبرعك بـ 2.5% من مالك يحمي أسرة متعففة ويفتح لها باب حياة كريمة ✦
@@ -681,8 +679,7 @@
         <div class="section-header"><h2>معرض الأثر وإنجازات اللجنة بالصور</h2></div>
         
         <div class="swiper mySwiper">
-            <div class="swiper-wrapper" id="sliderTrack">
-                </div>
+            <div class="swiper-wrapper" id="sliderTrack"></div>
         </div>
     </section>
 
@@ -704,7 +701,7 @@
     <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
     <audio id="quranAudioPlayer" src="https://server11.mp3quran.net/yasser/057.mp3" preload="auto"></audio>
 
-    <a href="https://api.whatsapp.com/send?text=%D8%A5%D9%84%D9%8A%D9%8A%D9%8%20%D8%A7%D9%84%D9%85%D9%84%D9%81%20%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%20%D9%84%D9%84%D8%AC%D9%8مي%D8%A9%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%D8%A9%20-%20%D9%84%D8%AC%D9%86%D8%A9%20%D8%B2%D9%83%D8%A7%D8%A3%D8%A9%20%D8%A7%D9%84%D9%83%D9%88%D9%85%20%D8%A7%D9%84%D8%B7%D9%88%D9%8A%D9%84%20%D8%B4%D8%A7%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1" target="_blank" class="share-fab">
+    <a href="https://api.whatsapp.com/send?text=%D8%A5%D9%84%D9%8A%D9%8A%D9%8%20%D8%A7%D9%84%D9%8من%D9%81%20%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%20%D9%84%D9%84%D8%AC%D9%8مي%D8%A9%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%D8%A9%20-%20%D9%84%D8%AC%D9%86%D8%A9%20%D8%B2%D9%83%D8%A7%D8%A3%D8%A9%20%D8%A7%D9%84%D9%83%D9%88%D9%85%20%D8%A7%D9%84%D8%B7%D9%88%D9%8A%D9%84%20%D8%B4%D8%A7%D8%B1%D9%83%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1" target="_blank" class="share-fab">
         <i class="fa-brands fa-whatsapp"></i>
         <span class="share-tooltip">انشر تؤجر (واتساب)</span>
     </a>
@@ -734,7 +731,7 @@
         const quranDatabase = [
             { text: '"إِنَّ الْمُصَّدِّقِينَ وَالْمُصَّدِّقَاتِ وَأَقْرَضُوا اللَّهَ قَرْضًا حَسَنًا يُضَاعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ"', source: "سورة الحديد - آية 18", audio: "https://server11.mp3quran.net/yasser/057.mp3" },
             { text: '"مَّثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ"', source: "سورة البقرة - آية 261", audio: "https://server11.mp3quran.net/yasser/002.mp3" },
-            { text: '"وَمَا أَنفَقْتُم مِّن شَيْءٍ فَهُوَ يُخْلِفُهُ ۖ وَهُوَ خَيْرُ الرَّازِقِينَ"', source: "سورة سبأ - آية 39", audio: "https://server11.mp3quran.net/yasser/034.mp3" },
+            { text: '"وَمَا أَنفَقْتُم مِّن شَيْءٍ فَهوُ يُخْلِفُهُ ۖ وَهُوَ خَيْرُ الرَّازِقِينَ"', source: "سورة سبأ - آية 39", audio: "https://server11.mp3quran.net/yasser/034.mp3" },
             { text: '"الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ"', source: "سورة البقرة - آية 274", audio: "https://server11.mp3quran.net/yasser/002.mp3" }
         ];
         let currentQuranIndex = 0;
@@ -915,15 +912,12 @@
             });
         });
 
-        // ----------------------------------------------------
-        // الكود الجديد المسؤول عن توليد الـ 16 صورة وتشغيل السلايدر
-        // ----------------------------------------------------
+        // توليد الـ 16 صورة وتشغيل السلايدر
         const sliderTrack = document.getElementById('sliderTrack');
         const totalImages = 16; 
         let trackHTML = '';
         
         for(let i = 1; i <= totalImages; i++) {
-            // لاحظ إضافة كلاس swiper-slide الضروري للمكتبة
             trackHTML += `
             <div class="swiper-slide slide-item" onclick="openLightbox('images/photo${i}.jpg')">
                 <img src="images/photo${i}.jpg" alt="صورة ${i}" onerror="this.src='https://placehold.co/400x300/0a5c43/ffffff?text=%D8%B5%D9%88%D8%B1%D8%A9+${i}'">
@@ -932,17 +926,17 @@
         }
         sliderTrack.innerHTML = trackHTML;
 
-        // تفعيل Swiper ليسمح بالسحب والحركة المستمرة الدائرية
+        // تفعيل Swiper
         const swiper = new Swiper('.mySwiper', {
             slidesPerView: 'auto',
             spaceBetween: 15,
-            loop: true,               // هذه الخاصية تمنع الفراغ الأبيض وتعيد الصور من البداية
-            speed: 3500,              // سرعة التنقل
-            grabCursor: true,         // ظهور علامة اليد لتمكين السحب
+            loop: true,
+            speed: 3500,
+            grabCursor: true,
             autoplay: {
-                delay: 0,             // حركة مستمرة بدون توقف بين الصور
-                disableOnInteraction: false, // لا تتوقف الحركة عند سحب الصور باليد
-                pauseOnMouseEnter: true      // التوقف عند تمرير الماوس (اختياري)
+                delay: 0,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
             },
         });
 
@@ -953,12 +947,9 @@
         function closeLightbox() { lightboxModal.classList.remove('active'); }
         lightboxModal.addEventListener('click', (e) => { if (e.target !== lightboxImg && e.target !== document.querySelector('.lightbox-close')) closeLightbox(); });
 
-        // =========================================
-        // كود إخفاء شاشة الترحيب (Splash Screen)
-        // =========================================
+        // إخفاء شاشة الترحيب (Splash Screen)
         window.addEventListener('load', function() {
             const splashScreen = document.getElementById('splash-screen');
-            // تأخير 1.5 ثانية عشان يلحق يشوف اللوجو وبيعمل نبض
             setTimeout(function() {
                 splashScreen.classList.add('fade-out');
             }, 1500); 
